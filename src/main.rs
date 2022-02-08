@@ -50,7 +50,7 @@ fn touch(
                 .spawn_bundle(SpriteBundle {
                     sprite: Sprite {
                         color: Color::rgb(0.0, 1.0, 1.0),
-                        custom_size: Some(Vec2::new(100.0 * force, 100.0 * force)),
+                        custom_size: Some(Vec2::new(100.0 + 100.0 * force, 100.0 + 100.0 * force)),
                         ..Default::default()
                     },
                     transform: Transform::from_translation(pos),
@@ -62,7 +62,7 @@ fn touch(
             let entity = *entities.0.get(&touch.id()).unwrap();
             let (mut transform, mut sprite) = cursors.get_mut(entity).unwrap();
             transform.translation = pos;
-            sprite.custom_size = Some(Vec2::new(100.0, 100.0) * force);
+            sprite.custom_size = Some(Vec2::new(100.0 + 100.0 * force, 100.0 + 100.0 * force));
         }
     }
 
@@ -76,5 +76,5 @@ fn cursor_pos(window: &Window, camera: &Transform, pos: Vec2) -> Vec3 {
     let size = Vec2::new(window.width() as f32, window.height() as f32);
     let p = pos - size / 2.0;
     let vec = camera.compute_matrix() * p.extend(0.0).extend(1.0);
-    vec.truncate()
+    vec.truncate().truncate().extend(0.0)
 }
