@@ -1,0 +1,15 @@
+[package]
+name = "winit-web-touch-event-test"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#bevy = { git = "https://github.com/bevyengine/bevy", branch = "main" }
+bevy = { path = "../bevy" }
+web-sys = "0.3"
+
+[patch.crates-io]
+# winit = { git = "https://github.com/ryo33/winit", rev = "590d44016e3cdf08c94165236a8ce246cb2efeaf" }
+winit = { path = "../winit" }
