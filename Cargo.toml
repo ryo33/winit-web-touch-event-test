@@ -10,4 +10,4 @@ bevy = { git = "https://github.com/bevyengine/bevy", branch = "main" }
 web-sys = "0.3"
 
 [patch.crates-io]
-winit = { git = "https://github.com/ryo33/winit", rev = "0987b716e091f226f5fb1f3087314ea0ecd13c32" }
+winit = { git = "https://github.com/ryo33/winit", rev = "bac7e9323ba2b885a79accde71d0bda5189d4f60" }
