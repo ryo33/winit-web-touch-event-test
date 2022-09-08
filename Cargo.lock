@@ -3174,7 +3174,7 @@ checksum = "c811ca4a8c853ef420abd8592ba53ddbbac90410fab6903b3e79972a631f7680"
 [[package]]
 name = "winit"
 version = "0.26.1"
-source = "git+https://github.com/ryo33/winit?rev=1911832f28263b1cd8742a1209a8ec58057aaf6c#1911832f28263b1cd8742a1209a8ec58057aaf6c"
+source = "git+https://github.com/ryo33/winit?rev=3eb4a3d0d6ed6e79530a241467f346a99d3d87e2#3eb4a3d0d6ed6e79530a241467f346a99d3d87e2"
 dependencies = [
  "bitflags",
  "cocoa",
