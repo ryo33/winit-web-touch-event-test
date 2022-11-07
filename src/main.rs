@@ -1,5 +1,6 @@
 use bevy::{input::touch::ForceTouch, prelude::*, utils::HashMap};
 
+#[derive(Resource)]
 pub struct TouchEntities(pub HashMap<u64, Entity>);
 
 fn main() {
@@ -18,7 +19,7 @@ fn setup(mut commands: Commands, mut windows: ResMut<Windows>) {
     let height = js_window.inner_height().unwrap().as_f64().unwrap() as f32;
     window.set_resolution(width, height);
 
-    commands.spawn_bundle(OrthographicCameraBundle::new_2d());
+    commands.spawn(Camera2dBundle::default());
 }
 
 fn touch(
@@ -47,7 +48,7 @@ fn touch(
             .unwrap() as f32;
         if touches.just_pressed(touch.id()) {
             let entity = commands
-                .spawn_bundle(SpriteBundle {
+                .spawn(SpriteBundle {
                     sprite: Sprite {
                         color: Color::rgb(0.0, 1.0, 1.0),
                         custom_size: Some(Vec2::new(100.0 + 100.0 * force, 100.0 + 100.0 * force)),

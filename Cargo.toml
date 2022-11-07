@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = { git = "https://github.com/bevyengine/bevy", branch = "main" }
-web-sys = "0.3"
+bevy = { git = "https://github.com/bevyengine/bevy", rev = "02fbf16c8096e49ced66db571373128ea9508b9f" }
+web-sys = { version = "0.3", features = ["Window"] }
 
 [patch.crates-io]
-winit = { git = "https://github.com/ryo33/winit", rev = "bac7e9323ba2b885a79accde71d0bda5189d4f60" }
+winit = { git = "https://github.com/ryo33/winit", rev = "ee312a89bc0704de30e246a707e5a277dd575b20" }
