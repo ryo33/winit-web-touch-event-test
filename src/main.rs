@@ -26,15 +26,10 @@ fn touch(
     mut commands: Commands,
     touches: Res<Touches>,
     mut entities: ResMut<TouchEntities>,
-    windows: Res<Windows>,
-    camera: Query<&Transform, With<Camera>>,
-    mut cursors: Query<(&mut Transform, &mut Sprite), Without<Camera>>,
+    mut cursors: Query<&mut Style>,
 ) {
-    let window = windows.get_primary().unwrap();
-    let camera = camera.single();
-
     for touch in touches.iter() {
-        let pos = cursor_pos(window, &camera, touch.position());
+        let pos = touch.position();
         let force = touch
             .force()
             .map(|f| match f {
@@ -48,34 +43,42 @@ fn touch(
             .unwrap() as f32;
         if touches.just_pressed(touch.id()) {
             let entity = commands
-                .spawn(SpriteBundle {
-                    sprite: Sprite {
-                        color: Color::rgb(0.0, 1.0, 1.0),
-                        custom_size: Some(Vec2::new(100.0 + 100.0 * force, 100.0 + 100.0 * force)),
-                        ..Default::default()
-                    },
-                    transform: Transform::from_translation(pos),
+                .spawn(NodeBundle {
+                    style: style_from(pos, force),
+                    background_color: Color::rgb(0.0, 0.0, 1.0).into(),
                     ..Default::default()
                 })
                 .id();
             entities.0.insert(touch.id(), entity);
         } else {
             let entity = *entities.0.get(&touch.id()).unwrap();
-            let (mut transform, mut sprite) = cursors.get_mut(entity).unwrap();
-            transform.translation = pos;
-            sprite.custom_size = Some(Vec2::new(100.0 + 100.0 * force, 100.0 + 100.0 * force));
+            let mut style = cursors.get_mut(entity).unwrap();
+            *style = style_from(pos, force);
         }
     }
 
     for touch in touches.iter_just_released() {
-        let entity = entities.0.remove(&touch.id()).unwrap();
-        commands.entity(entity).despawn();
+        if let Some(entity) = entities.0.remove(&touch.id()) {
+            commands.entity(entity).despawn();
+        }
+    }
+    for touch in touches.iter_just_cancelled() {
+        if let Some(entity) = entities.0.remove(&touch.id()) {
+            commands.entity(entity).despawn();
+        }
     }
 }
 
-fn cursor_pos(window: &Window, camera: &Transform, pos: Vec2) -> Vec3 {
-    let size = Vec2::new(window.width() as f32, window.height() as f32);
-    let p = pos - size / 2.0;
-    let vec = camera.compute_matrix() * p.extend(0.0).extend(1.0);
-    vec.truncate().truncate().extend(0.0)
+fn style_from(pos: Vec2, force: f32) -> Style {
+    let size = 100.0 * force + 100.0;
+    Style {
+        position_type: PositionType::Absolute,
+        position: UiRect {
+            left: Val::Px(pos.x - size / 2.0),
+            top: Val::Px(pos.y - size / 2.0),
+            ..Default::default()
+        },
+        size: Size::new(Val::Px(size), Val::Px(size)),
+        ..Default::default()
+    }
 }
